@@ -1,0 +1,49 @@
+version: '3.9'
+services:
+  mysql:
+    image: yobasystems/alpine-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: 
+      MYSQL_DATABASE: 
+      MYSQL_USER: 
+      MYSQL_PASSWORD: 
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+  httpd:
+    image: alibouhrouche/apache-php8
+    environment:
+      - MINI_URL=
+      - MINI_PWD=
+      - MINI_SALT=
+      - MINI_COOKIE=
+      - MINI_COOKIE_TIME=
+      - MINI_DB_HOST=
+      - MINI_DB_USER=
+      - MINI_DB_PASS=
+      - MINI_DB_NAME=
+      - MYSQL_HOST=mysql
+      - APACHE_SERVER_NAME=lamp.docker.localhost
+      - PHP_SHORT_OPEN_TAG=On
+      - PHP_ERROR_REPORTING=E_ALL
+      - PHP_DISPLAY_ERRORS=On
+      - PHP_DISPLAY_STARTUP_ERRORS=On
+      - PHP_LOG_ERRORS=On
+      - PHP_HTML_ERRORS=On
+      - PHP_XDEBUG_ENABLED=true
+    ports:
+      - "80:80"
+    volumes:
+      - ./www:/app/public
+  phpmyadmin:
+    image: phpmyadmin
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=
+      - PMA_USER=
+      - PMA_PASSWORD=
+networks:
+  default:
+    name: lamp_default
